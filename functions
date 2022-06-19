@@ -91,7 +91,7 @@ service_create_container() {
   docker cp $SERVICE_TEMPLATE_NAME:/etc/vernemq/. $SERVICE_ROOT/config &> /dev/null
   docker rm --force "$SERVICE_TEMPLATE_NAME" &> /dev/null
 
-  ID=$(docker run --name "$SERVICE_NAME" -d --restart always -v "$SERVICE_ROOT/data:/var/lib/vernemq" -v "$SERVICE_ROOT/config:/etc/vernemq" --env-file="$SERVICE_ROOT/ENV" --label dokku=service --label dokku.service=vernemq "$PLUGIN_IMAGE:$PLUGIN_IMAGE_VERSION")
+  ID=$(docker run --name "$SERVICE_NAME" -d --restart always -v "$SERVICE_ROOT/data:/var/lib/vernemq" -e "DOCKER_VERNEMQ_ACCEPT_EULA=yes" -v "$SERVICE_ROOT/config:/etc/vernemq" --env-file="$SERVICE_ROOT/ENV" --label dokku=service --label dokku.service=vernemq "$PLUGIN_IMAGE:$PLUGIN_IMAGE_VERSION")
   echo "$ID" > "$SERVICE_ROOT/ID"
 
   dokku_log_verbose_quiet "Waiting for container to be ready"
